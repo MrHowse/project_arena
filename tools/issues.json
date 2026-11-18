@@ -1,0 +1,78 @@
+{
+  "labels": [
+    {"name": "content", "color": "548930", "description": "A new enemy, hero, weapon or pickup"},
+    {"name": "systems", "color": "003A70", "description": "A change to the engine: needs a maintainer review"},
+    {"name": "tune", "color": "F07420", "description": "A change to settings.py"},
+    {"name": "first-timer", "color": "FCAF17", "description": "Small and safe: a good first job"},
+    {"name": "stretch", "color": "723D8A", "description": "Hard. For when you want a challenge"},
+    {"name": "team-decision", "color": "E31B22", "description": "The whole team decides, one person makes the change"}
+  ],
+  "issues": [
+    {"title": "Name the game", "labels": ["team-decision", "first-timer"],
+     "body": "\"Project Arena\" is a placeholder.\n\n- [ ] Collect ideas in the comments below\n- [ ] Vote in class\n- [ ] One person changes `TITLE` in `settings.py` and the heading in `README.md`"},
+    {"title": "Choose the arena colours", "labels": ["tune", "first-timer"],
+     "body": "The sand and wall colours are at the top of `settings.py`. Try a few palettes, post a screenshot of your favourite in the pull request."},
+
+    {"title": "Weapon: Trident (three-way spread)", "labels": ["content"],
+     "body": "Fires three projectiles in a fan.\n\nHint: `from core.weapon import rotate`, then call `self.fire()` three times with `rotate(direction, -15)`, `direction` and `rotate(direction, 15)`. Set `HITS = 3` so the fairness check counts all three."},
+    {"title": "Weapon: Sling (fast and weak)", "labels": ["content"],
+     "body": "A very short cooldown and low damage. Find numbers that feel good but stay under 60 damage per second."},
+    {"title": "Weapon: War hammer (slow, huge knockback)", "labels": ["content"],
+     "body": "One heavy swing. Use `self.slash()` with a wide `arc` and a large `knockback`. Could it also `slow()` the enemies it hits? `slash()` returns the list of enemies hit."},
+    {"title": "Weapon: your own idea", "labels": ["content"],
+     "body": "Describe the weapon in a comment before you start, so nobody builds the same one. Copy this issue if you need another."},
+
+    {"title": "Hero: Retiarius (the net fighter)", "labels": ["content"],
+     "body": "Special: throw a net that slows every enemy near the hero.\n\nHint: `world.enemies_within(self.pos, 140)` and `enemy.slow(3, 0.3)`."},
+    {"title": "Hero: Berserker", "labels": ["content"],
+     "body": "Low health, and a special that makes the hero much faster for a few seconds.\n\nHint: `self.hasten(3, 1.8)`. Check the hero budget in the sandbox."},
+    {"title": "Hero: Medic", "labels": ["content"],
+     "body": "A special that heals. How much is fair? The cooldown is part of the budget, so a short cooldown costs more."},
+    {"title": "Hero: your own idea", "labels": ["content"],
+     "body": "Describe the hero and its special in a comment before you start. Copy this issue if you need another."},
+
+    {"title": "Pickup: Speed sandals", "labels": ["content"],
+     "body": "Makes the hero faster for a few seconds. Hint: `hero.hasten(5, 1.5)`."},
+    {"title": "Pickup: Shield charm", "labels": ["content"],
+     "body": "A few seconds of taking no damage. Hint: `hero.shield = 3`."},
+    {"title": "Pickup: Fire flask", "labels": ["content"],
+     "body": "Explodes when collected, damaging every enemy nearby. Hint: `world.blast(self.pos, 120, 30, source=hero)`."},
+    {"title": "Pickup: your own idea", "labels": ["content"],
+     "body": "Describe it in a comment before you start. Copy this issue if you need another."},
+
+    {"title": "Boss: an enemy with THREAT 4 and at least three states", "labels": ["content", "stretch"],
+     "body": "A boss arrives at the end of every fifth wave (see `BOSS_EVERY` in `settings.py`), as soon as one exists in `enemies/`.\n\n- [ ] `THREAT = 4`, which gives a budget of 70 points and a `RADIUS` up to 60\n- [ ] A state machine with at least three states. Read `enemies/bull.py` first\n- [ ] Every attack gives the player a warning they can see\n- [ ] It can be beaten by an ordinary player\n\nTest it with `python3 sandbox.py enemies/your_boss.py`."},
+
+    {"title": "Waves: heal the hero a little between waves", "labels": ["systems"],
+     "body": "In `core/waves.py`. Put the amount in `settings.py` so the team can tune it."},
+    {"title": "Waves: design the first five waves by hand", "labels": ["systems"],
+     "body": "Random waves are uneven. Make waves 1 to 5 hand-picked lists so every game starts with a good difficulty curve, then let `build_wave()` take over.\n\nCareful: enemies are found by the registry, so look classes up by `NAME` and fall back to the random builder if one is missing."},
+    {"title": "Waves: show what is coming in the next wave", "labels": ["systems"],
+     "body": "During the break between waves, tell the player what the next wave contains. Work with whoever owns the HUD."},
+
+    {"title": "HUD: pause screen", "labels": ["systems"],
+     "body": "P pauses and resumes. While paused, nothing in the world moves. Start in `PlayScene` in `core/game.py`."},
+    {"title": "HUD: credits screen", "labels": ["systems"],
+     "body": "A screen, reached from the menu, that lists every class in the registry with its author. It must keep working as more classes arrive, so think about what happens when the list is longer than the screen."},
+    {"title": "HUD: show more than one line of the message feed", "labels": ["systems", "first-timer"],
+     "body": "`draw_hud()` in `core/hud.py` shows only the newest message. `world.messages` holds up to four. Show them all without covering the arena."},
+    {"title": "HUD: a big banner when a wave starts", "labels": ["systems"],
+     "body": "\"WAVE 3\" across the middle of the arena for a second or two, then gone."},
+
+    {"title": "Audio: make core/sound.py play sounds", "labels": ["systems", "stretch"],
+     "body": "The engine already has a `play(name)` hook. Call it from the right places, then make it produce sound.\n\n- [ ] Sounds are made in code, the same way as Dust Runner, so the repository holds no audio files\n- [ ] Everything is inside try/except: a Mac with no audio device must still run the game\n- [ ] A volume setting in `settings.py`\n- [ ] The tests still pass with no audio device"},
+    {"title": "High scores: remember the top five", "labels": ["systems"],
+     "body": "Save scores to `scores.json` (already in `.gitignore`, so each Mac keeps its own). Show the table on the game over screen. A missing or damaged file must not crash the game."},
+    {"title": "Engine: stop enemies stacking on top of each other", "labels": ["systems", "stretch"],
+     "body": "Enemies that chase the hero end up in one pile. Add gentle separation in `World.update()` so they spread out. Add a test in `tests/test_core.py`."},
+    {"title": "Engine: a new kind of content, the arena Hazard", "labels": ["systems", "stretch"],
+     "body": "Design a fifth abstract base class, `Hazard` (spike traps, fire pits, pillars), with its own `hazards/` folder.\n\nThis touches the registry, the world, the wave director and the tests. Write a short plan as a comment on this issue and have a maintainer agree to it before you write code."},
+
+    {"title": "Maintainers: keep the review queue moving", "labels": ["systems"],
+     "body": "At the start and end of each lesson, look at the open pull requests. Anything waiting longer than one lesson gets a reviewer. Anything touching `core/`, `settings.py` or `tests/` gets a maintainer."},
+    {"title": "Balance pass before release", "labels": ["tune", "team-decision"],
+     "body": "Lesson 9. Play five games each and record the wave you reached. Change one number at a time in `settings.py`, in its own pull request, and say what you saw that made you change it."},
+    {"title": "Release v1.0", "labels": ["team-decision"],
+     "body": "Lesson 10.\n\n- [ ] Every open pull request is merged or closed\n- [ ] `CREDITS.md` lists everyone and what they built\n- [ ] The tests pass on `main`\n- [ ] A maintainer creates the v1.0 release on GitHub with release notes"}
+  ]
+}
