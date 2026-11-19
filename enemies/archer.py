@@ -18,6 +18,17 @@ class Archer(Enemy):
     TOO_CLOSE = 170             # back away inside this distance
     TOO_FAR = 260               # move closer beyond this distance
 
+    IMAGE = None
+
+    @classmethod
+    def get_image(cls):
+        if cls.IMAGE is None:
+            raw = pygame.image.load("assets_e/archer_eye.png").convert_alpha()
+            size = cls.RADIUS * 2
+            cls.IMAGE = pygame.transform.smoothscale(raw, (50, 50))
+        return cls.IMAGE
+
+
     def think(self, world, dt):
         hero = world.hero
         distance = self.distance_to(hero)
@@ -30,7 +41,6 @@ class Archer(Enemy):
             self.shoot(world, hero, speed=230)
 
     def draw(self, surface):
-        # Optional: draw something more interesting than a circle.
-        self.draw_body(surface)
-        pygame.draw.line(surface, (35, 31, 32),
-                         (self.pos.x - 8, self.pos.y - 8), (self.pos.x + 8, self.pos.y + 8), 3)
+        image = self.get_image()
+        rect = image.get_rect(center=(self.pos.x, self.pos.y))
+        surface.blit(image, rect)
