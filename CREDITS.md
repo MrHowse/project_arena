@@ -16,7 +16,7 @@ Add your name on a new line under your gate's heading, like this:
 
 
 ## West gate
-
+- Lincoln and Leo: new enemy (eventually)
 
 ## Starter kit
 
