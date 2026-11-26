@@ -3,11 +3,11 @@ from core.enemy import Enemy
 
 
 class Grunt(Enemy):
-    NAME = "Aing-Gus"
+    NAME = "Ass"
     AUTHOR = "James"
     THREAT = 1
     MAX_HP = 1
-    SPEED = 1000
+    SPEED = 260
     DAMAGE = 1
     RADIUS = 30
     COLOUR = (190, 20, 27)
