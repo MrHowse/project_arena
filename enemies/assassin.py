@@ -4,7 +4,7 @@ from core.enemy import Enemy
 
 class Grunt(Enemy):
     NAME = "Aing-Gus"
-    AUTHOR = "Starter kit"
+    AUTHOR = "James"
     THREAT = 1
     MAX_HP = 1
     SPEED = 1000
