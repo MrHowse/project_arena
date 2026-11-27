@@ -7,6 +7,7 @@ state has its own rule for what to do and when to switch to another state.
       ^                                                                  |
       +--------------------------- 1.0 s -------------------------------+
 """
+import pygame
 from core.enemy import Enemy
 
 
@@ -29,6 +30,11 @@ class Bull(Enemy):
         self.state = "stalk"
         self.state_time = 0.0
         self.charge_direction = None
+
+        # Load the sprite image and scale it to match the enemy's diameter (RADIUS * 2)
+        raw_image = pygame.image.load("assets_e/angrydriver.png").convert_alpha()
+        size = self.RADIUS * 2
+        self.image = pygame.transform.smoothscale(raw_image, (size, size))
 
     def change_state(self, new_state):
         self.state = new_state
@@ -60,9 +66,10 @@ class Bull(Enemy):
                 self.change_state("stalk")
 
     def draw(self, surface):
-        # Turn gold while winding up so the player can see the charge coming.
-        normal = self.COLOUR
+        # Optional: draw a gold warning circle underneath while winding up
         if self.state == "wind_up":
-            self.COLOUR = (252, 175, 23)
-        self.draw_body(surface)
-        self.COLOUR = normal
+            pygame.draw.circle(surface, (252, 175, 23), (int(self.pos.x), int(self.pos.y)), self.RADIUS + 4)
+
+        # Center the image on self.pos and draw it
+        rect = self.image.get_rect(center=(int(self.pos.x), int(self.pos.y)))
+        surface.blit(self.image, rect)
